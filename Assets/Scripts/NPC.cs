@@ -19,6 +19,8 @@ public class NPC : MonoBehaviour
     pressE.text = messages[index];
 
     if(index < messages.Count)
+    {
       index++;
+    }
   }
 }

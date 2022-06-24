@@ -2,9 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sword : MonoBehaviour
+public class Sword : MonoBehaviour, IEquipment
 {
   private Hand playerHand;
+  public Collider weaponCollider;
+
+  public GameObject GetGameObject()
+  {
+    return gameObject;
+  }
+
+  public Transform GetTransform()
+  {
+    return gameObject.transform;
+  }
+
+  public Collider GetDamageCollider()
+  {
+    return weaponCollider;
+  }
 
   private void OnTriggerStay(Collider collider)
   {
@@ -12,7 +28,14 @@ public class Sword : MonoBehaviour
     if(Input.GetKeyDown(KeyCode.Q))
     {
       playerHand = collider.GetComponentInChildren<Hand>();
-      playerHand.EquipToHand(gameObject);
+      playerHand.EquipToHand(this);
     }
   }
+}
+
+public interface IEquipment
+{
+  Collider GetDamageCollider();
+  GameObject GetGameObject();
+  Transform GetTransform();
 }

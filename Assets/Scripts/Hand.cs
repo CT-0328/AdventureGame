@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+
 
 public class Hand : MonoBehaviour
 {
-  private GameObject equippedItem;
+  private IEquipment equippedItem;
   private Animator anim;
+  private bool isAttacking;
 
   void Start()
   {
@@ -14,7 +15,7 @@ public class Hand : MonoBehaviour
     anim.speed = 2;
   }
 
-  public void EquipToHand(GameObject item)
+  public void EquipToHand(IEquipment item)
   {
     // Save picked up item
     equippedItem = item;
@@ -24,19 +25,39 @@ public class Hand : MonoBehaviour
 
   public void attemptSwing()
   {
-    anim.SetTrigger("Swing");
+    if(isAttacking == false)
+    {
+      anim.SetTrigger("Swing");
+    }
   }
 
-  public void OrientItem(GameObject item)
+  public void OrientItem(IEquipment item)
   {
+    Transform equipmentTransform = item.GetTransform();
     // Parent item to hand so it will follow player
-    item.transform.parent = transform;
+    equipmentTransform.parent = transform;
     // Teleport into player's hand
-    item.transform.position = transform.position;
-    item.transform.position += new Vector3(0, -0.4f, 0);
-    // Set scale to prevent squashing/stretching
-    item.transform.localScale = new Vector3(1, 0.75f, 2);
+    equipmentTransform.position = transform.position;
+    //equipmentTransform.position += new Vector3(0, -0.5f, 0);
     // Set rotation to look normal
-    item.transform.localRotation = Quaternion.identity;
+    equipmentTransform.localRotation = Quaternion.identity;
+  }
+
+  public void TurnOnHitbox()
+  {
+     isAttacking = true;
+    if(equippedItem != null)
+    {
+      equippedItem.GetDamageCollider().enabled = true;
+    }
+  }
+
+  public void TurnOffHitbox()
+  {
+    isAttacking = false;
+    if(equippedItem != null)
+    {
+      equippedItem.GetDamageCollider().enabled = false;
+    }
   }
 }

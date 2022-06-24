@@ -13,10 +13,10 @@ TagManager:
   - Equipment
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - EnemyDamage
+  - PlayerDamage
+  - PlayerHealth
+  - EnemyHealth
   - 
   - 
   - 
